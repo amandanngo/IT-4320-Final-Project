@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from data_processing import SeatingChart
+from models import db, Admin, Reservation
 
 #Set Up SQLAlchemy
 
@@ -15,4 +16,19 @@ def admin_login():
 #Redirects to Admin dashboard upon successful login
 @admin_bp.route('/admin',)
 def admin_login_post():
+    username = request.form['username']
+    password = request.form['password']
+    
+    admin = Admin.query.filter_by(username=username, password=password).first()
+
+    if admin:
+        session['admin_logged_in'] = True
+        return redirect(url_for('admin.admin_dashboard'))
+    else:
+        flash('Invalid username or password.')
+        return redirect(url_for('admin.admin_login'))
+
+#GET route: admin dashboard page
+def admin_dashboard():
     pass
+
