@@ -30,5 +30,19 @@ def admin_login_post():
 
 #GET route: admin dashboard page
 def admin_dashboard():
-    pass
+    if not session.get('admin_logged_in'):
+        flash('Please login first.')
+        return redirect(url_for('admin.admin_login'))
+    
+    reservations = Reservation.query.all()
+    seating_chart = SeatingChart()
+
+    # Mark the selected reserved seats
+    for r in reservations:
+        seating_chart.seats[r.row][r.column] = 'X'
+    
+    total_sales = seating_chart.calculate_total_sales(reservations)
+    return render_template('admin.html', reservations=reservations, seating=seating_chart.seats, total_sales=total_sales)
+    
+    
 
