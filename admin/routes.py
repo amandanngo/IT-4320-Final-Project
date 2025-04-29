@@ -46,3 +46,14 @@ def admin_dashboard():
     
     
 
+#Delete the reservation
+@admin_bp.route('/delete/<int:id>', methods=['POST'])
+def delete_reservation(id):
+    pass
+
+
+
+#Log out the admin
+@admin_bp.route('/logout')
+def admin_logout():
+    pass
