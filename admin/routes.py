@@ -4,7 +4,6 @@ from models import db, Admin, Reservation
 
 #Set Up SQLAlchemy
 
-
 admin_bp = Blueprint('admin', __name__, template_folder='templates', url_prefix='/admin')
 
 # GET route that takes user to login page
@@ -39,7 +38,7 @@ def admin_dashboard():
 
     # Mark the selected reserved seats
     for r in reservations:
-        seating_chart.seats[r.row][r.column] = 'X'
+        seating_chart.toggle_seat(r.seatRow, r.seatColumn)
     
     total_sales = seating_chart.calculate_total_sales(reservations)
     return render_template('admin.html', reservations=reservations, seating=seating_chart.seats, total_sales=total_sales)
@@ -49,11 +48,22 @@ def admin_dashboard():
 #Delete the reservation
 @admin_bp.route('/delete/<int:id>', methods=['POST'])
 def delete_reservation(id):
-    pass
+    if not session.get('admin_logged_in'):
+        flash(('Please log in first.'))
+        return redirect(url_for('admin.admin_login'))
+    
+    res = Reservation.query.get_or_404(id)
+    db.session.delete(res)
+    db.session.commit()
+    flash("Reservation deleted.")
+    return redirect(url_for('admin.admin_dashboard'))
+    
 
 
 
 #Log out the admin
 @admin_bp.route('/logout')
 def admin_logout():
-    pass
+    session.pop('admin_logged_in', None)
+    flash("Logged out succesfully")
+    return redirect(url_for('admin.admin_login'))
