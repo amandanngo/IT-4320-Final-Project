@@ -1,10 +1,17 @@
 from flask import Flask
+from models import db
+from reservation.routes import res_bp
 
 #import packages we created for the admin and reservatib blueprints
 from admin.routes import admin_bp
 from reservation.routes import res_bp
+from admin.routes import admin_bp
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///reservations.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
 
 #register blueprints
 app.register_blueprint(admin_bp, url_prefix='/admin')
