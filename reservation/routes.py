@@ -5,6 +5,13 @@ from data_processing import create_ticket_no
 
 res_bp = Blueprint('reservation', __name__, template_folder='templates', url_prefix='/reservation')
 
+@res_bp.route('/form', methods=['GET'])
+def show_form():
+    # Seating chart should be passed from your data_processing class
+    from data_processing import SeatingChart
+    chart = SeatingChart()
+    return render_template('reservation_form.html', seating=chart.seats)
+
 #Create entry in 'reservations' table in db
 @res_bp.route('/create', methods=['POST'])
 def reservation_create():
