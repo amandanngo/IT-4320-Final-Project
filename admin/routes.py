@@ -3,8 +3,8 @@ from data_processing import SeatingChart
 from models import db, Admin, Reservation
 
 #Set Up SQLAlchemy
-
 admin_bp = Blueprint('admin', __name__, template_folder='templates', url_prefix='/admin')
+
 
 # GET route that takes user to login page
 @admin_bp.route('/login', methods=['GET'])
@@ -13,7 +13,7 @@ def admin_login():
 
 #POST route that attempts to login user
 #Redirects to Admin dashboard upon successful login
-@admin_bp.route('/admin',)
+@admin_bp.route('/login', methods=['POST'])
 def admin_login_post():
     username = request.form['username']
     password = request.form['password']
@@ -28,20 +28,23 @@ def admin_login_post():
         return redirect(url_for('admin.admin_login'))
 
 #GET route: admin dashboard page
+@admin_bp.route('/dashboard', methods=['GET'])
 def admin_dashboard():
     if not session.get('admin_logged_in'):
         flash('Please login first.')
         return redirect(url_for('admin.admin_login'))
     
     reservations = Reservation.query.all()
-    seating_chart = SeatingChart()
+    # seating_chart = SeatingChart()
 
-    # Mark the selected reserved seats
-    for r in reservations:
-        seating_chart.toggle_seat(r.seatRow, r.seatColumn)
+    # # Mark the selected reserved seats
+    # for r in reservations:
+    #     seating_chart.toggle_seat(r.seatRow, r.seatColumn)
     
-    total_sales = seating_chart.calculate_total_sales(reservations)
-    return render_template('admin.html', reservations=reservations, seating=seating_chart.seats, total_sales=total_sales)
+    # total_sales = seating_chart.calculate_total_sales(reservations)
+    # return render_template('admin.html', reservations=reservations, seating=seating_chart.seats, total_sales=total_sales)
+    return render_template('admin.html')
+
     
     
 
@@ -62,7 +65,7 @@ def delete_reservation(id):
 
 
 #Log out the admin
-@admin_bp.route('/logout')
+@admin_bp.route('/logout', methods=['POST'])
 def admin_logout():
     session.pop('admin_logged_in', None)
     flash("Logged out succesfully")
