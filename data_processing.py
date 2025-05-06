@@ -14,8 +14,10 @@ class SeatingChart:
         reservations = Reservation.query.all()
         cost_matrix = SeatingChart.get_cost_matrix()
 
+        totalCost = 0
+
         for r in reservations:
-            totalCost = cost_matrix[r.seatRow][r.seatColumn]
+            totalCost += cost_matrix[r.seatRow][r.seatColumn]
        
         return totalCost
 
