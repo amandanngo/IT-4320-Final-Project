@@ -29,6 +29,12 @@ def index():
 with app.app_context():
     db.create_all()
 
+
+def test_sales():
+    from data_processing import SeatingChart 
+    total = SeatingChart.calculate_total_sales()
+    return f"Total Sales: ${total}"
+
 #run the application
 if  __name__ == '__main__':
     app.run(debug=True,port=5016)
