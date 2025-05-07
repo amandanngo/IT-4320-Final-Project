@@ -33,8 +33,11 @@
 
   <div class="form-section">
     <form action="{{ url_for('reservation.reservation_create') }}" method="POST">
-      <label>First Name:</label><br>
-      <input type="text" name="passengerName" required><br><br>
+        <label>First Name:</label><br>
+        <input type="text" name="firstName" required><br><br>
+        
+        <label>Last Name:</label><br>
+        <input type="text" name="lastName" required><br><br>
 
       <label>Choose a Row:</label><br>
       <select name="seatRow" required>

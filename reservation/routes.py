@@ -19,7 +19,9 @@ def show_form():
 
 @res_bp.route('/create', methods=['POST'])
 def reservation_create():
-    passenger_name = request.form.get('passengerName')
+    first_name = request.form.get('firstName', '').strip()
+    last_name = request.form.get('lastName', '').strip()
+    passenger_name = f"{first_name} {last_name}".strip()
     seat_row       = int(request.form.get('seatRow'))
     seat_column    = int(request.form.get('seatColumn'))
 
@@ -47,5 +49,4 @@ def reservation_create():
         )
 
     # 3) Re-render the form with updated chart + any flash
-    seating = build_seats()
-    return render_template('reservation_form.html', seating=seating)
+    return redirect(url_for('reservation.show_form'))
