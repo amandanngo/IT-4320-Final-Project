@@ -1,62 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Reserve Your Seat</title>
-    <style>
-        .seating-chart {
-            /* font-family: monospace;
-            white-space: pre;
-            line-height: 1.5; */
-        }
-        .legend {
-            margin-bottom: 10px;
-        }
-        .form-section {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Reserve Your Seat</h1>
+{# templates/reservations.html #}
+{% extends 'base.html' %}
 
-    <div class="legend">
-        <strong>X</strong> = Reserved Seat &nbsp;&nbsp; | &nbsp;&nbsp;
-        <strong>O</strong> = Available Seat
-    </div>
+{% block title %}Reservations{% endblock %}
 
-    <div class="seating-chart">
-        <table>   
-        {% for row in seating %}
-            <tr>
-            {% for seat in row %}
-                <td>'{{ seat }}'</td>
-            {% endfor %}
-            </tr>
+{% block content %}
+  <h1>Reserve Your Seat</h1>
+
+  {# Flash messages #}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash-message {% if category=='error' %}flash-error{% else %}flash-success{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="legend">
+    <strong>X</strong> = Reserved Seat &nbsp;&nbsp; | &nbsp;&nbsp;
+    <strong>O</strong> = Available Seat
+  </div>
+
+  <div class="seating-chart">
+    {% for row in seating %}
+      {% for seat in row %}
+        {{ seat }}
+      {% endfor %}
+      <br>
+    {% endfor %}
+  </div>
+
+  <div class="form-section">
+    <form action="{{ url_for('reservation.reservation_create') }}" method="POST">
+        <label>First Name:</label><br>
+        <input type="text" name="firstName" required><br><br>
+        
+        <label>Last Name:</label><br>
+        <input type="text" name="lastName" required><br><br>
+
+      <label>Choose a Row:</label><br>
+      <select name="seatRow" required>
+        {% for i in range(12) %}
+          <option value="{{ i }}">{{ i }}</option>
         {% endfor %}
-        </table>
-    </div>
+      </select><br><br>
 
-    <div class="form-section">
-        <form action="{{ url_for('reservation.reservation_create') }}" method="POST">
-            <label>First Name:</label><br>
-            <input type="text" name="passengerName" required><br><br>
+      <label>Choose a Seat (0–3):</label><br>
+      <select name="seatColumn" required>
+        {% for i in range(4) %}
+          <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select><br><br>
 
-            <label>Choose a Row:</label><br>
-            <select name="seatRow" required>
-                {% for i in range(12) %}
-                    <option value="{{ i }}">{{ i }}</option>
-                {% endfor %}
-            </select><br><br>
-
-            <label>Choose a Seat (0-3):</label><br>
-            <select name="seatColumn" required>
-                {% for i in range(4) %}
-                    <option value="{{ i }}">{{ i }}</option>
-                {% endfor %}
-            </select><br><br>
-
-            <input type="submit" value="Reserve Seat">
-        </form>
-    </div>
-</body>
-</html>
+      <button type="submit">Reserve Seat</button>
+    </form>
+  </div>
+{% endblock %}
