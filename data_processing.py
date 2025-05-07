@@ -5,11 +5,6 @@ def create_ticket_no(name):
     pass
 
 class SeatingChart:
-    def __init__(self):
-        self.seats = [['O', 'O', 'O', 'O'] for row in range(12)]
-    
-    def toggle_seat(row,seat_no):
-        pass
 
     def get_cost_matrix():
         cost_matrix = [[100, 75, 50, 100] for row in range(12)]
@@ -19,4 +14,5 @@ class SeatingChart:
         pass
 
     def display_seating_chart():
+        #populate matrix from reservations table
         pass

@@ -4,9 +4,9 @@
     <title>Reserve Your Seat</title>
     <style>
         .seating-chart {
-            font-family: monospace;
+            /* font-family: monospace;
             white-space: pre;
-            line-height: 1.5;
+            line-height: 1.5; */
         }
         .legend {
             margin-bottom: 10px;
@@ -51,12 +51,15 @@
     </div>
 
     <div class="seating-chart">
+        <table>   
         {% for row in seating %}
+            <tr>
             {% for seat in row %}
-                {{ seat }} 
+                <td>'{{ seat }}'</td>
             {% endfor %}
-            <br>
+            </tr>
         {% endfor %}
+        </table>
     </div>
 
     <div class="form-section">

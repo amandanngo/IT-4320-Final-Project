@@ -2,6 +2,14 @@
 
 {% block title %}Admin Dashboard{% endblock %}
 
+
 {% block content %}
+<form action=" {{ url_for('admin.admin_logout') }} " method="POST">
+    <button type="submit">Log Out</button>
+</form>
+    
     <h1>Dashboard</h1>
+    <h2>Seating Chart</h2>
+    <h2>Total Sales</h2>
+    <h2>Reservation List</h2>
 {% endblock %}
