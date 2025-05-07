@@ -49,11 +49,3 @@ def reservation_create():
     # 3) Re-render the form with updated chart + any flash
     seating = build_seats()
     return render_template('reservation_form.html', seating=seating)
-
-@res_bp.route('/delete/<int:id>', methods=['POST'])
-def reservation_delete(id):
-    res = Reservation.query.get_or_404(id)
-    db.session.delete(res)
-    db.session.commit()
-    flash("Reservation deleted.", "success")
-    return redirect(url_for('admin.admin_dashboard'))
