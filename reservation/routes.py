@@ -15,10 +15,24 @@ def show_form():
 #Create entry in 'reservations' table in db
 @res_bp.route('/create', methods=['POST'])
 def reservation_create():
+    from data_processing import SeatingChart
+
     #Get info from form
     passenger_name = request.form.get('passengerName')
     seat_row = int(request.form.get('seatRow'))
     seat_column = int(request.form.get('seatColumn'))
+
+    #Check if seat is already assigned
+    existing = Reservation.query.filter_by(seatRow=seat_row, seatColumn=seat_column).first()
+    if existing:
+        flash(f"That seat is already assigned. Choose again.", "error")
+
+        #Reload seating chart
+        chart = SeatingChart()
+        reservations = Reservation.query.all()
+        for r in reservations:
+            chart.seats[r.seatRow][r.seatColumn] = 'X'
+        return render_template('reservation_form.html', seating=chart.seats)
     
     #Generate confirmation code
     ticket_number = create_ticket_no(passenger_name)
@@ -34,7 +48,15 @@ def reservation_create():
     db.session.commit()
 
     #Display order confirmation on page
-    return render_template('confirmation.html', name=passenger_name, code=ticket_number)
+    flash(f"Congratulations {passenger_name}! Seat: {seat_row}-{seat_column} is now reserved for you. Enjoy your trip!"
+          f" Your eticket number is: {ticket_number}")
+    
+    chart = SeatingChart()
+    reservations = Reservation.query.all()
+    for r in reservations:
+        chart.seats[r.seatRow][r.seatColumn] = 'X'
+        
+    return render_template('reservation_form.html', seating=chart.seats)
 
 @res_bp.route('/delete/<int:id>', methods=['POST'])
 def reservation_delete(id):
