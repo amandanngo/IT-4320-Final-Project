@@ -42,11 +42,10 @@ class SeatingChart:
 
        reservations = SeatingChart.reservation_list()
 
-       for r in reservations:
-           reservation_info.append(f"{r['reservation_name']}: row {r['reservation_row']} seat{r['reservation_column']} - ticket confirmation: {r['reservation_ticket']}") 
+       for reservationElements in reservations:
+           reservation_info.append(f"{reservationElements['reservation_name']}: row {reservationElements['reservation_row']} seat{reservationElements['reservation_column']} - ticket confirmation: {reservationElements['reservation_ticket']}") 
 
        convertToString = '' 
-       
        for string in reservation_info: ##https://www.geeksforgeeks.org/python-program-to-convert-a-list-to-string/
            convertToString += string + '\n'
 
