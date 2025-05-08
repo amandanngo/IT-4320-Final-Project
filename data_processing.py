@@ -1,8 +1,5 @@
 from models import db, Admin, Reservation
 
-def create_ticket_no(name):
-    #mashes up user's name with "INFOTC4320" to create ticket number
-    pass
 
 class SeatingChart:
 
@@ -23,4 +20,42 @@ class SeatingChart:
 
 
     def display_seating_chart():
-        pass
+        seats = [['O' for _ in range(4)] for _ in range(12)]
+        for reservations in Reservation.query.all():
+            seats[reservations.seatRow][reservations.seatColumn] = 'X'    
+        return seats
+    
+    def reservation_list():
+        reservation = []
+        for reservations in Reservation.query.all():
+           reservation.append({
+            'reservation_name': reservations.passengerName,
+            'reservation_row': reservations.seatRow,
+            'reservation_column': reservations.seatColumn,
+            'reservation_ticket': reservations.eTicketNumber
+        })
+           
+        return reservation
+    
+    def display_reservation_list():
+       reservation_info = []
+
+       reservations = SeatingChart.reservation_list()
+
+       for r in reservations:
+           reservation_info.append(f"{r['reservation_name']}: row {r['reservation_row']} seat{r['reservation_column']} - ticket confirmation: {r['reservation_ticket']}") 
+
+       convertToString = '' 
+       
+       for string in reservation_info: ##https://www.geeksforgeeks.org/python-program-to-convert-a-list-to-string/
+           convertToString += string + '\n'
+
+       return convertToString 
+           
+    def delete_reservation_info():
+       reservation_info = []
+
+       reservations = SeatingChart.reservation_list()
+
+       for r in reservations:
+           reservation_info.remove

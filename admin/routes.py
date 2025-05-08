@@ -35,7 +35,8 @@ def admin_dashboard():
         return redirect(url_for('admin.admin_login'))
     
     reservations = Reservation.query.all()
-    seating_chart = SeatingChart()
+    seating_chart = SeatingChart.display_seating_chart()
+    reservation_list = SeatingChart.display_reservation_list()
 
     # Mark the selected reserved seats
     # for r in reservations:
@@ -43,7 +44,7 @@ def admin_dashboard():
     
     total_sales = SeatingChart.calculate_total_sales()
 
-    return render_template('admin.html', total_sales=total_sales)
+    return render_template('admin.html', total_sales=total_sales, seating_chart=seating_chart, reservation_list=reservation_list)
 
     
     
