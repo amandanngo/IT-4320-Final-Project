@@ -1,7 +1,6 @@
 # reservation/routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models import db, Reservation
-from data_processing import create_ticket_no
 
 res_bp = Blueprint('reservation', __name__, template_folder='templates', url_prefix='/reservation')
 

@@ -7,9 +7,18 @@
 <form action=" {{ url_for('admin.admin_logout') }} " method="POST">
     <button type="submit">Log Out</button>
 </form>
-    
     <h1>Dashboard</h1>
     <h2>Seating Chart</h2>
+    <p> {{ seating_chart }} </p>
     <h2>Total Sales</h2>
+    <p>{{ total_sales }}</p>
     <h2>Reservation List</h2>
+    {% for reservation in reservation_list %}
+     <pre><p> {{ reservation.reservation_name }}: row {{ reservation.reservation_row }} seat {{ reservation.reservation_column }} - ticket confirmation: {{ reservation.reservation_ticket }}</p> 
+        <form action=" {{ url_for('admin.delete_reservation', reservation_Id=reservation.reservation_id) }} " method="POST">
+        <button type="submit">Delete Reservation</button>
+          <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/pre -->
+        </pre> </form>  
+    {% endfor %}
+
 {% endblock %}

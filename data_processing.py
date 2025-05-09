@@ -1,8 +1,5 @@
-#Functions that help us process data in our application
+from models import db, Admin, Reservation
 
-def create_ticket_no(name):
-    #mashes up user's name with "INFOTC4320" to create ticket number
-    pass
 
 class SeatingChart:
 
@@ -11,8 +8,32 @@ class SeatingChart:
         return cost_matrix
 
     def calculate_total_sales():
-        pass
+        reservations = Reservation.query.all()
+        cost_matrix = SeatingChart.get_cost_matrix()
+
+        totalCost = 0
+
+        for r in reservations:
+            totalCost += cost_matrix[r.seatRow][r.seatColumn]
+       
+        return totalCost
 
     def display_seating_chart():
-        #populate matrix from reservations table
-        pass
+        seats = [['O' for _ in range(4)] for _ in range(12)]
+        for reservations in Reservation.query.all():
+            seats[reservations.seatRow][reservations.seatColumn] = 'X'    
+        return seats
+    
+    def reservation_list():
+        reservation = []
+        for reservations in Reservation.query.all():
+           reservation.append({
+            'reservation_name': reservations.passengerName,
+            'reservation_id': reservations.id,
+            'reservation_row': reservations.seatRow,
+            'reservation_column': reservations.seatColumn,
+            'reservation_ticket': reservations.eTicketNumber})
+           
+        return reservation
+    
+   

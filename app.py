@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from models import db, Admin, Reservation
 from reservation.routes import res_bp
+
 import os
 
 
@@ -23,13 +24,12 @@ app.register_blueprint(res_bp, url_prefix='/reservation')
 @app.route('/', methods=['GET'])
 def index():
    
- 
-    return render_template('index.html')
+  return render_template('index.html')
 
 with app.app_context():
     db.create_all()
 
 #run the application
 if  __name__ == '__main__':
-    app.run(debug=True,port=5016)
+    app.run(host = "0.0.0.0")
 
