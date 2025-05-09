@@ -30,31 +30,11 @@ class SeatingChart:
         for reservations in Reservation.query.all():
            reservation.append({
             'reservation_name': reservations.passengerName,
+            'reservation_id': reservations.id,
             'reservation_row': reservations.seatRow,
             'reservation_column': reservations.seatColumn,
-            'reservation_ticket': reservations.eTicketNumber
-        })
+            'reservation_ticket': reservations.eTicketNumber})
            
         return reservation
     
-    def display_reservation_list():
-       reservation_info = []
-
-       reservations = SeatingChart.reservation_list()
-
-       for reservationElements in reservations:
-           reservation_info.append(f"{reservationElements['reservation_name']}: row {reservationElements['reservation_row']} seat{reservationElements['reservation_column']} - ticket confirmation: {reservationElements['reservation_ticket']}") 
-
-       convertToString = '' 
-       for string in reservation_info: ##https://www.geeksforgeeks.org/python-program-to-convert-a-list-to-string/
-           convertToString += string + '\n'
-
-       return convertToString 
-           
-    def delete_reservation_info():
-       reservation_info = []
-
-       reservations = SeatingChart.reservation_list()
-
-       for r in reservations:
-           reservation_info.remove
+   

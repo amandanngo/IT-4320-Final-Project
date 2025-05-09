@@ -36,7 +36,7 @@ def admin_dashboard():
     
     reservations = Reservation.query.all()
     seating_chart = SeatingChart.display_seating_chart()
-    reservation_list = SeatingChart.display_reservation_list()
+    reservation_list = SeatingChart.reservation_list()
 
     # Mark the selected reserved seats
     # for r in reservations:
@@ -50,13 +50,13 @@ def admin_dashboard():
     
 
 #Delete the reservation
-@admin_bp.route('/delete/<int:id>', methods=['POST'])
-def delete_reservation(id):
+@admin_bp.route('/delete/<string:reservation_Id>', methods=['POST'])
+def delete_reservation(reservation_Id):
     if not session.get('admin_logged_in'):
         flash(('Please log in first.'))
         return redirect(url_for('admin.admin_login'))
     
-    res = Reservation.query.get_or_404(id)
+    res = Reservation.query.get_or_404(reservation_Id)
     db.session.delete(res)
     db.session.commit()
     flash("Reservation deleted.")
