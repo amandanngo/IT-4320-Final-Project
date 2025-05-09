@@ -50,7 +50,7 @@ def admin_dashboard():
     
 
 #Delete the reservation
-@admin_bp.route('/delete/<string:reservation_Id>', methods=['POST'])
+@admin_bp.route('/delete/<int:reservation_Id>', methods=['POST'])
 def delete_reservation(reservation_Id):
     if not session.get('admin_logged_in'):
         flash(('Please log in first.'))

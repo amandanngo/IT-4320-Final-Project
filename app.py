@@ -24,13 +24,10 @@ app.register_blueprint(res_bp, url_prefix='/reservation')
 @app.route('/', methods=['GET'])
 def index():
    
- 
   return render_template('index.html')
 
 with app.app_context():
     db.create_all()
-
-
 
 #run the application
 if  __name__ == '__main__':

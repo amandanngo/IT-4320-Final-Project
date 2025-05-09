@@ -18,7 +18,6 @@ class SeatingChart:
        
         return totalCost
 
-
     def display_seating_chart():
         seats = [['O' for _ in range(4)] for _ in range(12)]
         for reservations in Reservation.query.all():
